@@ -1,1 +1,1 @@
-# shoulder-routine
+Shoulder-blade routine workout app
