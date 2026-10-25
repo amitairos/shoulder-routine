@@ -6,6 +6,11 @@
 <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14171a" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Shoulder">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Shoulder routine</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%232f6f68%22/%3E%3C/svg%3E">
 <style>
@@ -103,6 +108,11 @@ input[type=date]{font:inherit;min-height:48px;padding:0 12px;border-radius:12px;
 .check{width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
 .check.on{background:var(--accent);color:var(--accent-ink)}
 .hide{display:none!important}
+.ease{margin-top:14px;border-color:var(--accent)}
+.ease .cues li{font-size:15px;padding:8px 0 8px 24px}
+.ease .cues li:before{top:16px}
+.tips h3{font-size:18px;margin:0 0 6px}
+.tips .cues li{font-size:16px}
 </style>
 </head>
 <body>
@@ -140,7 +150,7 @@ const timed = (n, s, label="") => Array.from({length:n}, () => ({kind:"time", se
 function ex(phase){
   const kb = phase==="w58";
   return {
-    row:{name:"Band row", video:V.row, rest:30, load:{w12:"Band where the last reps are hard",w34:"Stronger band or step back",w58:"Heaviest band with clean form"}[phase],
+    row:{name:"Band row", video:V.row, rest:30, load:{w12:"A few reps short of hard at first, then last reps hard",w34:"Stronger band or step back",w58:"Heaviest band with clean form"}[phase],
       cues:["Elbows back past your ribs","Shoulder blades back and down, pause 2 s","Slow return, shoulders away from ears"],
       sets:{w12:reps(3,"12–15"),w34:reps(3,"12–15"),w58:reps(3,"12")}[phase]},
     bagrow: kb ? {name:"Kettlebell one-arm row", video:V.kbrow, rest:20, load:"12 kg",
@@ -164,17 +174,17 @@ function ex(phase){
       : {name:"Bag deadlift or squat", video:V.bagdl, video2:V.bagsq, rest:30, load:"Water bag", optional:true,
         cues:["Deadlift: bag between feet, hinge, flat back","Or squat hugging the bag at your chest","Lower slowly"], sets:reps(2,"12")},
     // flare / strap / minimum
-    heat:{name:"Heat", rest:0, load:"Heat pad or warm shower", cues:["Upper back and around the shoulder blade","10–15 min, during work is fine","Tap Done when it's on"], sets:[{kind:"reps",target:"10–15 min",label:""}]},
+    heat:{name:"Heat, if you want it", rest:0, optional:true, load:"Heat pad or warm shower", cues:["Upper back and around the shoulder blade, 10–15 min","Don't feel like it? Skip it, the rest still works","Tap Done when it's on"], sets:[{kind:"reps",target:"10–15 min",label:""}]},
     strapGentle:{name:"Strap sequence, gently", video:V.strap, rest:10, load:"Smaller range", cues:["Retraction: chin down 6, chin up 6","Rotation: 6 each side","No pushing past the end"], sets:[{kind:"reps",target:"6 + 6",label:"Retraction"},{kind:"reps",target:"6 each side",label:"Rotation"}]},
-    nodGentle:{name:"Chin nod, gently", video:V.nod, rest:5, load:"Very light effort", cues:["Lie on your back, head supported","Nod gently as if saying yes, no lifting","Stop if it stirs the pain"], sets:timed(5,10,"Hold")},
+    nodGentle:{name:"Chin nod, gently", video:V.nod, rest:5, load:"Very light effort", cues:["Firm surface, head supported","Nod gently as if saying yes, no lifting","Stop if it stirs the pain"], sets:timed(5,10,"Hold")},
     holdLight:{name:"Suitcase hold, left", video:V.hold, rest:20, load:"Lighter bag than usual", cues:["Stand tall, no leaning","Shoulder down","Set it down slowly"], sets:timed(3,30,"Left")},
     iso:{name:"Doorway isometric rotation", video:V.iso, rest:5, load:"Moderate effort", cues:["Elbow at your side in a doorway","Press out into the frame, then in","Release slowly"], sets:[...timed(5,5,"Outward"),...timed(5,5,"Inward")]},
     breath:{name:"Belly breathing", video:V.breath, rest:0, load:"About 10 breaths", cues:["Hand on belly, hand on chest","Breathe in through the nose: belly rises","Long, slow breath out"], sets:timed(1,90,"")},
     minRow:{name:"Band row", video:V.row, rest:0, load:"Last few reps hard", cues:["Elbows back, pause","Shoulders away from ears","Slow return"], sets:reps(1,"15")},
     minHold:{name:"Suitcase hold, left", video:V.hold, rest:20, load:"Water bag", cues:["Stand tall","Shoulder down","Set it down slowly"], sets:timed(2,30,"Left")},
-    strapRet:{name:"Strap: retraction", video:V.strap, rest:10, load:"Strap just under the skull", cues:["Push arms forward, head straight back","Don't choke, keep head level","Trunk still"], sets:[{kind:"reps",target:"6",label:"Chin down"},{kind:"reps",target:"6",label:"Chin up"}]},
-    strapRot:{name:"Strap: assisted rotation", video:V.strap, rest:10, load:"Ends crossed, hand anchors at chest", cues:["Turn to the end of range, a touch more","Head level","Trunk still"], sets:[{kind:"reps",target:"6",label:"Left"},{kind:"reps",target:"6",label:"Right"}]},
-    nod:{name:"Chin nod (lying down)", video:V.nod, rest:5, load:"Low effort, head supported", cues:["Lie on your back, head on the bed or a folded towel","Nod gently as if saying yes: back of the head slides up","Don't lift your head. Hold 10 s, relax"], sets:timed(10,10,"Hold")},
+    strapRet:{name:"Strap: retraction", video:V.strap, rest:10, load:"Strap just under the skull", cues:["Push arms forward, head straight back","Don't choke, keep head level, trunk still","Still sore? Use a smaller range"], sets:[{kind:"reps",target:"6",label:"Chin down"},{kind:"reps",target:"6",label:"Chin up"}]},
+    strapRot:{name:"Strap: assisted rotation", video:V.strap, rest:10, load:"Ends crossed, hand anchors at chest", cues:["Turn to the end of range, a touch more","Head level, trunk still","Still sore? Stay short of the end"], sets:[{kind:"reps",target:"6",label:"Left"},{kind:"reps",target:"6",label:"Right"}]},
+    nod:{name:"Chin nod (lying down)", video:V.nod, rest:5, load:nodEarly()?"First few days: 5 × 10 s, very light effort. Then 10 × 10 s":"10 × 10 s, low effort", cues:["Firm surface: folded towel on the floor or a firm mattress, not a soft bed","Nod gently as if saying yes: back of the head slides up","Don't lift your head. Hold 10 s, relax. Stop if it stirs the pain"], sets:timed(nodEarly()?5:10,10,"Hold")},
   };
 }
 const SESSIONS = {
@@ -214,8 +224,17 @@ function weekStreak(){ // consecutive weeks (ending this or last week) with >=2 
 }
 function strapStreak(){ let d=parse(ymd(now())), n=0; if(!strapDone(ymd(d))) d=addDays(d,-1); while(strapDone(ymd(d)) && n<400){n++; d=addDays(d,-1);} return n; }
 function trainedToday(){ return sessionsOn(ymd(now())).some(e=>trainingTypes.includes(e.type)); }
+const FIRST_SESSION="2026-10-25"; // his first session (8-min core), counted even if not logged here
+const EASE_SESSIONS=4; // session 1 + the next 3 (the "next 2–3" core-only sessions)
+function sessionCount(){ const st=parse(S.start); const l=S.log.filter(e=>trainingTypes.includes(e.type) && parse(e.date)>=st); let n=l.length; if(S.start<=FIRST_SESSION && !l.some(e=>e.date===FIRST_SESSION)) n++; return n; }
+function easing(){ return sessionCount()<EASE_SESSIONS; }
+function nodEarly(){ return daysBetween(parse(S.start), now())<4; }
+function trainedYesterday(){ const y=ymd(addDays(parse(ymd(now())),-1)); return sessionsOn(y).some(e=>trainingTypes.includes(e.type)); }
+function restBetween(){ return easing() && !trainedToday() && trainedYesterday(); }
+function easeCard(){ const n=sessionCount(); return `<div class="card ease"><span class="pill">Easing in · session ${Math.min(n+1,EASE_SESSIONS)} of ${EASE_SESSIONS}</span>
+  <ul class="cues small" style="margin-top:8px"><li>Core three only: band row, wall slide, suitcase carry</li><li>Stop each set 3–4 reps short of hard</li><li>Rest day between sessions. Go only if you're back to your usual pain</li><li>After this: build to "last reps hard" over a week, then add the one-arm row and band external rotation, one or two moves at a time</li></ul></div>`; }
 function suggested(){ const d=now().getDay(), today=ymd(now());
-  if(PLAN_DAYS.includes(d) && !trainedToday()) return "main"; if(!strapDone(today)) return "strap"; return null; }
+  if(PLAN_DAYS.includes(d) && !trainedToday() && !restBetween()) return easing()?"core":"main"; if(!strapDone(today)) return "strap"; return null; }
 
 // ---------- views ----------
 const app=document.getElementById("app");
@@ -226,8 +245,8 @@ const fmtDate = s => { const d=parse(s); return `${DN[d.getDay()]} ${d.getDate()
 
 function render(){ clearInterval(tick); tick=null;
   if(run) return renderRun();
-  app.innerHTML = `<div class="wrap">${tab==="home"?home():tab==="progress"?progress():settings()}</div>
-  <nav class="tabs">${[["home","Today"],["progress","Progress"],["settings","Settings"]].map(([k,l])=>`<button class="${tab===k?"on":""}" data-tab="${k}">${l}</button>`).join("")}</nav>`;
+  app.innerHTML = `<div class="wrap">${tab==="home"?home():tab==="progress"?progress():tab==="tips"?tips():settings()}</div>
+  <nav class="tabs">${[["home","Today"],["progress","Progress"],["tips","Tips"],["settings","Settings"]].map(([k,l])=>`<button class="${tab===k?"on":""}" data-tab="${k}">${l}</button>`).join("")}</nav>`;
   app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render();window.scrollTo(0,0);});
   app.querySelectorAll("[data-start]").forEach(b=>b.onclick=()=>startRun(b.dataset.start));
   bindExtra();
@@ -249,9 +268,12 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
     <div class="big">All done for today ✓</div>
     <div class="lbl">Rest up. Anything below still counts as extra.</div>
   </div>`}
+  ${restBetween()?`<p class="muted small" style="margin-top:10px">You trained yesterday. While easing in, leave a rest day between sessions: just the two must-dos today.</p>`:""}
+  ${easing()?easeCard():""}
   <h2>Or choose</h2>
   <div class="stack">${Object.entries(SESSIONS).filter(([k])=>k!==sug).map(([k,v])=>`<button class="opt" data-start="${k}"><div><b>${v.name}</b><span class="d">${v.desc}</span></div><span class="t">${v.mins} min</span></button>`).join("")}</div>
   <h2>Every day: two must-dos</h2>
+  <p class="muted small" style="margin:-4px 0 10px">Every day, including session, rest and flare days. They're gentle, so a flare isn't a reason to skip them.</p>
   <div class="stack">
   <button class="strapbtn" id="strapTick"><span class="check ${strapDone(t)?"on":""}">${strapDone(t)?"✓":""}</span><div><b>${strapDone(t)?"Strap + chin nod done today":"Strap + chin nod"}</b><div class="muted small">About 5 min · ${strapStreak()} day streak · tap to mark</div></div></button>
   <button class="strapbtn" id="breathTick"><span class="check ${breathDone(t)?"on":""}">${breathDone(t)?"✓":""}</span><div><b>${breathDone(t)?"Belly breathing done today":"One belly-breathing set"}</b><div class="muted small">About 10 breaths, ideally after lunch · tap to mark</div></div></button>
@@ -261,7 +283,8 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
   <div class="card">${weekStrip()}<p class="muted small" style="margin-top:12px">Outlined days are Sun, Tue, Wed. Orange dot: strap + chin nod done.</p></div>
   <h2>Good to know</h2>
   <div class="card stack small">
-    <p><b>Flare after a session?</b> A flare a day after a new session is common, especially after sitting or driving. Clearly worse the next day? Do the flare version next time.</p>
+    <p><b>Flare after a session?</b> A flare later that day or the next day after a new session is common, especially after sitting or driving. Clearly worse the next day? Do the flare version next time.</p>
+    <button class="btn ghost" data-tab="tips" style="min-height:48px;font-size:16px">Pain rule & everyday tips →</button>
     <p><b>See a doctor promptly</b> if you notice clumsy hands or dropping things, unsteady walking, or symptoms in both arms. Also get checked for new arm or hand weakness, new numbness, pain that wakes you at night, sharp pain shooting down the arm, or tingling that gets stronger or spreads.</p>
   </div>`; }
 function progress(){ const c=checkpoint(), w=weekNo(); const logs=[...S.log].sort((a,b)=>b.ts-a.ts);
@@ -277,14 +300,43 @@ function progress(){ const c=checkpoint(), w=weekNo(); const logs=[...S.log].sor
   <div class="bar" style="margin:12px 0"><i style="width:${Math.min(100,c/12*100)}%"></i></div><p class="muted small">${cpText}. Sessions in your first 4 weeks (${fmtDate(S.start)} – ${fmtDate(ymd(addDays(parse(S.start),27)))}).</p></div>
   <h2>Log</h2>
   <div class="card">${logs.length?`<ul class="log">${logs.map(e=>`<li><div><b>${esc(SESSIONS[e.type]?.name||e.type)}</b><div class="muted small">${fmtDate(e.date)}${e.done<e.total?` · ${e.done}/${e.total} exercises`:""}</div></div><div class="r">${e.pb!=null||e.pa!=null?`Pain ${e.pb??"–"} → ${e.pa??"–"}`:""}<br><button class="small muted" data-del="${e.ts}" style="min-height:36px">Remove</button></div></li>`).join("")}</ul>`:`<p class="muted">Your finished sessions will show here.</p>`}</div>`; }
+function tips(){ return `<h1>Tips</h1>
+  <div class="tips stack" style="margin-top:14px">
+  <h2>The pain rule</h2>
+  <div class="card"><h3>Hard effort is the goal; the 24-hour rule is the limit.</h3>
+  <ul class="cues">
+    <li>Pain during a set is OK if it stays tolerable and doesn't keep climbing set after set.</li>
+    <li>Sharp, stabbing or radiating pain during a move: stop that move for today.</li>
+    <li>By the next day you should be back to your usual. Same or better: keep going as planned.</li>
+    <li>Clearly worse the next day: do the flare version next time, then come back with one fewer set or one fewer bottle.</li>
+    <li>A flare later that day or the next day after a new session is common, especially after sitting or driving.</li>
+  </ul></div>
+  <h2>Everyday support</h2>
+  <div class="card"><ul class="cues">
+    <li>Higher chair: hips level with or above your knees. A low chair is where your body drops and the pain comes.</li>
+    <li>In the car: raise the seat so your hips aren't sunk below your knees.</li>
+    <li>Bring the headrest close to the back of your head.</li>
+    <li>On longer drives: stop or reset your posture every 30–40 minutes.</li>
+    <li>High pillow at night.</li>
+    <li>Insoles in your shoes.</li>
+    <li>Bonus: a small chin tuck, head straight back, whenever you notice it drifting forward.</li>
+    <li>Bonus: desk shoulder-blade squeezes, back and down, hold 5–10 s, 8–10 times.</li>
+    <li>Bonus: heat on the upper back when it's tense.</li>
+  </ul></div>
+  </div>`; }
 function settings(){ return `<h1>Settings</h1>
   <h2>Program start</h2><div class="card"><input type="date" id="start" value="${S.start}"><p class="muted small" style="margin-top:10px">The week phase moves forward from this date.</p></div>
   <h2>Week phase</h2><div class="card"><div class="seg">${[["auto",`Auto (${PHASES[autoPhase()]})`],["w12","Wk 1–2"],["w34","Wk 3–4"],["w58","Wk 5–8"]].map(([k,l])=>`<button class="${S.override===k?"on":""}" data-ph="${k}">${l}</button>`).join("")}</div>
   <p class="muted small" style="margin-top:10px">Auto moves to weeks 5–8 (12 kg kettlebell) only once the week 4 checkpoint is met.</p></div>
   <h2>Backup</h2><div class="card stack"><p class="muted small">Progress is saved on this device only. To move it, copy the backup here and paste it on the other device.</p>
   <button class="btn ghost" id="exp">Copy backup</button><button class="btn ghost" id="imp">Paste backup</button></div>
+  <h2>Install on your phone</h2><div class="card stack small">
+    <p><b>Android (Chrome):</b> menu ⋮ › Install app, or Add to Home screen.</p>
+    <p><b>iPhone (Safari):</b> Share › Add to Home Screen.</p>
+    <p class="muted">The installed app works offline, except the demo videos. On iPhone it may keep its own separate progress, so before switching, tap Copy backup here in Safari, then Paste backup in the installed app.</p>
+  </div>
   <h2>Reset</h2><button class="btn text" id="reset">Erase all progress</button>
-  <p class="muted small center" style="margin-top:8px">Routine v2.1</p>`; }
+  <p class="muted small center" style="margin-top:8px">Routine v2.2</p>`; }
 function bindExtra(){
   const st=document.getElementById("strapTick"); if(st) st.onclick=()=>{ const t=ymd(now()); if(S.strap[t]) delete S.strap[t]; else S.strap[t]=true; save(); render(); };
   const bt=document.getElementById("breathTick"); if(bt) bt.onclick=()=>{ const t=ymd(now()); S.breath=S.breath||{}; if(S.breath[t]) delete S.breath[t]; else S.breath[t]=true; save(); render(); };
@@ -310,10 +362,10 @@ function ringSvg(frac){ const r=100, c=2*Math.PI*r; return `<svg width="220" hei
 function renderRun(){ const R=run, N=R.list.length; const s=SESSIONS[R.type];
   const prog = R.i<0?0:R.mode==="end"?1:(R.i + R.set/Math.max(1,R.list[R.i].sets.length))/N;
   const top = `<div class="top"><button class="x" id="quit" aria-label="Close">✕</button><div class="bar"><i style="width:${prog*100}%"></i></div></div>`;
-  if(R.mode==="pain0"){ app.innerHTML=`<div class="wrap">${top}<div class="step">${s.name} · ${s.mins} min</div><div class="exname">How's the pain right now?</div><p class="muted">0 is none, 10 is the worst. Optional.</p>${["main","core","min"].includes(R.type)?`<p class="muted small" style="margin-top:8px">Tip: train before lunch, or 2+ hours after eating. Rows, lying face down and deadlifts on a full stomach can bring on reflux.</p>`:""}${painPicker("pp",R.pb)}</div>`;
+  if(R.mode==="pain0"){ app.innerHTML=`<div class="wrap">${top}<div class="step">${s.name} · ${s.mins} min</div><div class="exname">How's the pain right now?</div><p class="muted">0 is none, 10 is the worst. Optional.</p>${trainingTypes.includes(R.type)&&R.type!=="flare"&&easing()?easeCard():""}${["main","core","min"].includes(R.type)?`<p class="muted small" style="margin-top:8px">Tip: train before lunch, or 2+ hours after eating. Rows, lying face down and deadlifts on a full stomach can bring on reflux.</p>`:""}${painPicker("pp",R.pb)}</div>`;
     bindRun(); app.querySelectorAll("#pp [data-p]").forEach(b=>b.onclick=()=>{ R.pb=b.dataset.p==="skip"?null:+b.dataset.p; R.i=0; R.set=0; R.mode="set"; render(); }); return; }
   if(R.mode==="end"){ app.innerHTML=`<div class="wrap">${top}<div class="done-ic">✓</div><div class="exname center">Session done</div><p class="muted center">${R.doneEx} of ${R.list.filter(x=>!x.optional).length} exercises${R.type!=="strap"?"":""}. Nice work.</p>
-    <h2>Pain now? (optional)</h2>${painPicker("pa",R.pa)}<p class="muted small" style="margin-top:14px">Rule: fine if you're back to your usual by tomorrow. A flare a day after a new session is common, especially after sitting or driving. Clearly worse tomorrow? Do the flare version next time.</p></div>
+    <h2>Pain now? (optional)</h2>${painPicker("pa",R.pa)}<p class="muted small" style="margin-top:14px">Rule: fine if you're back to your usual by tomorrow. A flare later that day or the next day after a new session is common, especially after sitting or driving. Clearly worse tomorrow? Do the flare version next time.</p></div>
     <div class="dock"><div class="in"><button class="btn primary" id="saveEnd">Save session</button></div></div>`;
     bindRun(); app.querySelectorAll("#pa [data-p]").forEach(b=>b.onclick=()=>{ R.pa=b.dataset.p==="skip"?null:+b.dataset.p; render(); });
     document.getElementById("saveEnd").onclick=()=>endRun(true); return; }
@@ -359,6 +411,7 @@ function afterRest(){ run.mode="set"; render(); }
 function nextEx(done){ const R=run; if(done && !R.list[R.i].optional) R.doneEx++; R.i++; R.set=0; R.showVid=false; R.mode = R.i>=R.list.length ? "end" : "set"; render(); window.scrollTo(0,0); }
 function bindRun(){ const q=document.getElementById("quit"); if(q) q.onclick=()=>{ if(run.mode==="pain0"||confirm("Leave this session? It won't be saved.")) endRun(false); }; }
 render();
+if("serviceWorker" in navigator && location.protocol!=="file:"){ window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{})); }
 </script>
 </body>
 </html>
