@@ -112,7 +112,8 @@ input[type=date]{font:inherit;min-height:48px;padding:0 12px;border-radius:12px;
 const START_DEFAULT = "2026-10-25";
 const PLAN_DAYS = [0,2,3]; // Sun, Tue, Wed
 const V = {
-  strap:"https://www.youtube.com/watch?v=o-nGG7gxiPoSjA",
+  strap:"https://www.youtube.com/watch?v=o-nGG7QMlWY",
+  nod:"https://www.youtube.com/watch?v=9ZlXj2EnnzM",
   row:"https://www.youtube.com/watch?v=6Q7gxiPoSjA",
   bagrow:"https://www.youtube.com/watch?v=t_O57dTLTVo",
   wall:"https://www.youtube.com/watch?v=WIdjSjzNS2A",
@@ -142,7 +143,7 @@ function ex(phase){
     row:{name:"Band row", video:V.row, rest:30, load:{w12:"Band where the last reps are hard",w34:"Stronger band or step back",w58:"Heaviest band with clean form"}[phase],
       cues:["Elbows back past your ribs","Shoulder blades back and down, pause 2 s","Slow return, shoulders away from ears"],
       sets:{w12:reps(3,"12–15"),w34:reps(3,"12–15"),w58:reps(3,"12")}[phase]},
-    bagrow: kb ? {name:"Kettlebell one-arm row", video:V.kbrow, rest:20, load:"8 kg",
+    bagrow: kb ? {name:"Kettlebell one-arm row", video:V.kbrow, rest:20, load:"12 kg",
         cues:["Hand and knee on a chair, back flat","Pull toward your hip, pause","Lower slowly, don't let the shoulder drop"], sets:sides(3,"10–12")}
       : {name:"One-arm bag row", video:V.bagrow, rest:20, load:phase==="w12"?"Bag with 3–4 bottles":"Add 1–2 bottles",
         cues:["Hand and knee on a chair, back flat","Pull the bag toward your hip, pause","Lower slowly, don't let the shoulder drop"], sets:sides(phase==="w12"?2:3,"10–12")},
@@ -154,17 +155,18 @@ function ex(phase){
     prone:{name:"Prone Y or W raise", video:V.prone, rest:30, load:{w12:"No weight",w34:"1.5 kg if easy",w58:"1.5–2 kg"}[phase],
       cues:["Face down, pillow under chest, chin tucked","Lift arms into a W or Y, hold 2 s","Lower slowly. Hurts lying down? Do it bent over"],
       sets:reps(2,{w12:"10",w34:"10–12",w58:"12"}[phase])},
-    carry: kb ? {name:"Kettlebell suitcase carry", video:V.kbcarry, rest:30, load:"8 kg, or kettlebell plus bag",
+    carry: kb ? {name:"Kettlebell suitcase carry", video:V.kbcarry, rest:30, load:"12 kg, or kettlebell plus bag",
         cues:["Stand tall, don't lean","Shoulder down and slightly back","Set it down slowly"], sets:carry(3,2,60)}
       : {name:"Suitcase carry", video:V.carry, rest:30, load:phase==="w12"?"Bag with 5–6 bottles (~9 kg)":"Fullest bag you can carry upright",
         cues:["Walk or stand, tall, no leaning","Shoulder down and slightly back","Set it down slowly"], sets:carry(3,2,phase==="w12"?40:50)},
-    lower: kb ? {name:"Deadlift or goblet squat", video:V.kbdl, video2:V.goblet, rest:30, load:"8 kg", optional:true,
+    lower: kb ? {name:"Deadlift or goblet squat", video:V.kbdl, video2:V.goblet, rest:30, load:"12 kg (squat: bag if 12 kg is too much)", optional:true,
         cues:["Deadlift: hinge, flat back, stand up","Or goblet squat: bell at your chest","Lower slowly"], sets:reps(2,"12")}
       : {name:"Bag deadlift or squat", video:V.bagdl, video2:V.bagsq, rest:30, load:"Water bag", optional:true,
         cues:["Deadlift: bag between feet, hinge, flat back","Or squat hugging the bag at your chest","Lower slowly"], sets:reps(2,"12")},
     // flare / strap / minimum
     heat:{name:"Heat", rest:0, load:"Heat pad or warm shower", cues:["Upper back and around the shoulder blade","10–15 min, during work is fine","Tap Done when it's on"], sets:[{kind:"reps",target:"10–15 min",label:""}]},
     strapGentle:{name:"Strap sequence, gently", video:V.strap, rest:10, load:"Smaller range", cues:["Retraction: chin down 6, chin up 6","Rotation: 6 each side","No pushing past the end"], sets:[{kind:"reps",target:"6 + 6",label:"Retraction"},{kind:"reps",target:"6 each side",label:"Rotation"}]},
+    nodGentle:{name:"Chin nod, gently", video:V.nod, rest:5, load:"Very light effort", cues:["Lie on your back, head supported","Nod gently as if saying yes, no lifting","Stop if it stirs the pain"], sets:timed(5,10,"Hold")},
     holdLight:{name:"Suitcase hold, left", video:V.hold, rest:20, load:"Lighter bag than usual", cues:["Stand tall, no leaning","Shoulder down","Set it down slowly"], sets:timed(3,30,"Left")},
     iso:{name:"Doorway isometric rotation", video:V.iso, rest:5, load:"Moderate effort", cues:["Elbow at your side in a doorway","Press out into the frame, then in","Release slowly"], sets:[...timed(5,5,"Outward"),...timed(5,5,"Inward")]},
     breath:{name:"Belly breathing", video:V.breath, rest:0, load:"About 10 breaths", cues:["Hand on belly, hand on chest","Breathe in through the nose: belly rises","Long, slow breath out"], sets:timed(1,90,"")},
@@ -172,20 +174,22 @@ function ex(phase){
     minHold:{name:"Suitcase hold, left", video:V.hold, rest:20, load:"Water bag", cues:["Stand tall","Shoulder down","Set it down slowly"], sets:timed(2,30,"Left")},
     strapRet:{name:"Strap: retraction", video:V.strap, rest:10, load:"Strap just under the skull", cues:["Push arms forward, head straight back","Don't choke, keep head level","Trunk still"], sets:[{kind:"reps",target:"6",label:"Chin down"},{kind:"reps",target:"6",label:"Chin up"}]},
     strapRot:{name:"Strap: assisted rotation", video:V.strap, rest:10, load:"Ends crossed, hand anchors at chest", cues:["Turn to the end of range, a touch more","Head level","Trunk still"], sets:[{kind:"reps",target:"6",label:"Left"},{kind:"reps",target:"6",label:"Right"}]},
+    nod:{name:"Chin nod (lying down)", video:V.nod, rest:5, load:"Low effort, head supported", cues:["Lie on your back, head on the bed or a folded towel","Nod gently as if saying yes: back of the head slides up","Don't lift your head. Hold 10 s, relax"], sets:timed(10,10,"Hold")},
   };
 }
 const SESSIONS = {
   main:{name:"Main session", mins:15, desc:"Full strength session", list:["row","bagrow","wall","er","prone","carry","lower"]},
   core:{name:"Core only", mins:8, desc:"Row, wall slide, carry", list:["row","wall","carry"]},
-  flare:{name:"Flare day", mins:5, desc:"Gentle, plus heat", list:["heat","strapGentle","holdLight","iso","breath"]},
+  flare:{name:"Flare day", mins:5, desc:"Gentle, plus heat", list:["heat","strapGentle","nodGentle","holdLight","iso","breath"]},
   min:{name:"Bare minimum", mins:2, desc:"Keeps the habit alive", list:["minRow","minHold"]},
-  strap:{name:"Daily strap", mins:3, desc:"Every day this month", list:["strapRet","strapRot"]},
+  strap:{name:"Daily strap + chin nod", mins:5, desc:"Must-do, every day", list:["strapRet","strapRot","nod"]},
+  breath:{name:"Belly breathing", mins:2, desc:"Must-do: one set, ideally after lunch", list:["breath"]},
 };
 
 // ---------- state ----------
 const KEY="shoulderRoutine.v2";
 let S = load();
-function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) return Object.assign({start:START_DEFAULT,override:"auto",log:[],strap:{}},s);}catch(e){} return {start:START_DEFAULT,override:"auto",log:[],strap:{}}; }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) return Object.assign({start:START_DEFAULT,override:"auto",log:[],strap:{},breath:{}},s);}catch(e){} return {start:START_DEFAULT,override:"auto",log:[],strap:{},breath:{}}; }
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 const now = () => window.__NOW ? new Date(window.__NOW) : new Date();
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
@@ -199,7 +203,8 @@ function checkpoint(){ const st=parse(S.start), end=addDays(st,28); return S.log
 function autoPhase(){ const w=weekNo(); if(w<=2) return "w12"; if(w<=4) return "w34"; return checkpoint()>=10 ? "w58" : "w34"; }
 function phase(){ return S.override==="auto" ? autoPhase() : S.override; }
 function sessionsOn(dayStr){ return S.log.filter(e=>e.date===dayStr); }
-function strapDone(dayStr){ return !!S.strap[dayStr] || S.log.some(e=>e.date===dayStr && e.type==="strap"); }
+function strapDone(dayStr){ return !!S.strap[dayStr] || S.log.some(e=>e.date===dayStr && (e.type==="strap"||e.type==="flare")); }
+function breathDone(dayStr){ return !!(S.breath&&S.breath[dayStr]) || S.log.some(e=>e.date===dayStr && (e.type==="breath"||e.type==="flare")); }
 function weekStreak(){ // consecutive weeks (ending this or last week) with >=2 training sessions
   let ws=weekStart(now()), n=0;
   const cnt = w => S.log.filter(e=>trainingTypes.includes(e.type) && daysBetween(w,parse(e.date))>=0 && daysBetween(w,parse(e.date))<7).length;
@@ -237,6 +242,7 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
   ${s?`<div class="hero">
     <div class="lbl">Up next</div>
     <div class="big">${s.name} · ${s.mins} min</div>
+    ${trainingTypes.includes(sug)?`<div class="lbl" style="margin:-8px 0 14px">Best before lunch, or 2+ hours after eating, to spare your reflux.</div>`:""}
     <button class="go" data-start="${sug}">Start today's session</button>
   </div>`:`<div class="hero">
     <div class="lbl">Today</div>
@@ -245,12 +251,21 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
   </div>`}
   <h2>Or choose</h2>
   <div class="stack">${Object.entries(SESSIONS).filter(([k])=>k!==sug).map(([k,v])=>`<button class="opt" data-start="${k}"><div><b>${v.name}</b><span class="d">${v.desc}</span></div><span class="t">${v.mins} min</span></button>`).join("")}</div>
-  <h2>Strap today</h2>
-  <button class="strapbtn" id="strapTick"><span class="check ${strapDone(t)?"on":""}">${strapDone(t)?"✓":""}</span><div><b>${strapDone(t)?"Strap done today":"Mark strap done"}</b><div class="muted small">${strapStreak()} day streak</div></div></button>
+  <h2>Every day: two must-dos</h2>
+  <div class="stack">
+  <button class="strapbtn" id="strapTick"><span class="check ${strapDone(t)?"on":""}">${strapDone(t)?"✓":""}</span><div><b>${strapDone(t)?"Strap + chin nod done today":"Strap + chin nod"}</b><div class="muted small">About 5 min · ${strapStreak()} day streak · tap to mark</div></div></button>
+  <button class="strapbtn" id="breathTick"><span class="check ${breathDone(t)?"on":""}">${breathDone(t)?"✓":""}</span><div><b>${breathDone(t)?"Belly breathing done today":"One belly-breathing set"}</b><div class="muted small">About 10 breaths, ideally after lunch · tap to mark</div></div></button>
+  </div>
+  <p class="muted small" style="margin-top:10px">Optional bonuses: extra breathing sets, desk shoulder-blade squeezes, chin-tuck reminders, heat.</p>
   <h2>This week</h2>
-  <div class="card">${weekStrip()}<p class="muted small" style="margin-top:12px">Outlined days are Sun, Tue, Wed. Orange dot: strap done.</p></div>`; }
+  <div class="card">${weekStrip()}<p class="muted small" style="margin-top:12px">Outlined days are Sun, Tue, Wed. Orange dot: strap + chin nod done.</p></div>
+  <h2>Good to know</h2>
+  <div class="card stack small">
+    <p><b>Flare after a session?</b> A flare a day after a new session is common, especially after sitting or driving. Clearly worse the next day? Do the flare version next time.</p>
+    <p><b>See a doctor promptly</b> if you notice clumsy hands or dropping things, unsteady walking, or symptoms in both arms. Also get checked for new arm or hand weakness, new numbness, pain that wakes you at night, sharp pain shooting down the arm, or tingling that gets stronger or spreads.</p>
+  </div>`; }
 function progress(){ const c=checkpoint(), w=weekNo(); const logs=[...S.log].sort((a,b)=>b.ts-a.ts);
-  const cpText = c>=10 ? "Earned. Get your 8 kg kettlebell." : w>4 ? `Not reached (${c}/12). Keep going with bands and the bag.` : `${10-c} more to earn the 8 kg kettlebell`;
+  const cpText = c>=10 ? "Earned. Get your 12 kg kettlebell." : w>4 ? `Not reached (${c}/12). Keep going with bands and the bag.` : `${10-c} more to earn the 12 kg kettlebell`;
   return `<h1>Progress</h1>
   <div class="stats" style="margin-top:14px">
     <div class="card stat"><div class="n">${weekStreak()}</div><div class="l">week streak<br>(2+ sessions a week)</div></div>
@@ -265,26 +280,28 @@ function progress(){ const c=checkpoint(), w=weekNo(); const logs=[...S.log].sor
 function settings(){ return `<h1>Settings</h1>
   <h2>Program start</h2><div class="card"><input type="date" id="start" value="${S.start}"><p class="muted small" style="margin-top:10px">The week phase moves forward from this date.</p></div>
   <h2>Week phase</h2><div class="card"><div class="seg">${[["auto",`Auto (${PHASES[autoPhase()]})`],["w12","Wk 1–2"],["w34","Wk 3–4"],["w58","Wk 5–8"]].map(([k,l])=>`<button class="${S.override===k?"on":""}" data-ph="${k}">${l}</button>`).join("")}</div>
-  <p class="muted small" style="margin-top:10px">Auto moves to weeks 5–8 (kettlebell) only once the week 4 checkpoint is met.</p></div>
+  <p class="muted small" style="margin-top:10px">Auto moves to weeks 5–8 (12 kg kettlebell) only once the week 4 checkpoint is met.</p></div>
   <h2>Backup</h2><div class="card stack"><p class="muted small">Progress is saved on this device only. To move it, copy the backup here and paste it on the other device.</p>
   <button class="btn ghost" id="exp">Copy backup</button><button class="btn ghost" id="imp">Paste backup</button></div>
-  <h2>Reset</h2><button class="btn text" id="reset">Erase all progress</button>`; }
+  <h2>Reset</h2><button class="btn text" id="reset">Erase all progress</button>
+  <p class="muted small center" style="margin-top:8px">Routine v2.1</p>`; }
 function bindExtra(){
   const st=document.getElementById("strapTick"); if(st) st.onclick=()=>{ const t=ymd(now()); if(S.strap[t]) delete S.strap[t]; else S.strap[t]=true; save(); render(); };
+  const bt=document.getElementById("breathTick"); if(bt) bt.onclick=()=>{ const t=ymd(now()); S.breath=S.breath||{}; if(S.breath[t]) delete S.breath[t]; else S.breath[t]=true; save(); render(); };
   app.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ if(confirm("Remove this session?")){ S.log=S.log.filter(e=>String(e.ts)!==b.dataset.del); save(); render(); }});
   app.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>{ S.override=b.dataset.ph; save(); render(); });
   const sd=document.getElementById("start"); if(sd) sd.onchange=()=>{ if(sd.value){S.start=sd.value; save(); render();} };
   const ex_=document.getElementById("exp"); if(ex_) ex_.onclick=async()=>{ const t=btoa(unescape(encodeURIComponent(JSON.stringify(S)))); try{await navigator.clipboard.writeText(t); alert("Backup copied.");}catch(e){prompt("Copy this backup:",t);} };
   const im=document.getElementById("imp"); if(im) im.onclick=()=>{ const t=prompt("Paste your backup:"); if(!t) return; try{ S=Object.assign(load(),JSON.parse(decodeURIComponent(escape(atob(t.trim()))))); save(); alert("Backup restored."); render(); }catch(e){ alert("That backup didn't work."); } };
-  const rs=document.getElementById("reset"); if(rs) rs.onclick=()=>{ if(confirm("Erase all progress on this device?")){ S={start:START_DEFAULT,override:"auto",log:[],strap:{}}; save(); render(); } };
+  const rs=document.getElementById("reset"); if(rs) rs.onclick=()=>{ if(confirm("Erase all progress on this device?")){ S={start:START_DEFAULT,override:"auto",log:[],strap:{},breath:{}}; save(); render(); } };
 }
 
 // ---------- guided run ----------
 function startRun(type){ const E=ex(phase()); const list=SESSIONS[type].list.map(k=>({key:k,...E[k]}));
   run={type, list, i:-1, set:0, mode:"pain0", pb:null, pa:null, timer:null, started:Date.now(), doneEx:0, showVid:false};
   try{ navigator.wakeLock?.request("screen").then(w=>wakeLock=w).catch(()=>{});}catch(e){}
-  if(type==="strap"){ run.i=0; run.mode="set"; } render(); window.scrollTo(0,0); }
-function endRun(save_){ if(save_){ const t=ymd(now()); S.log.push({ts:Date.now(),date:t,type:run.type,pb:run.pb,pa:run.pa,done:run.doneEx,total:run.list.filter(x=>!x.optional).length}); if(run.type==="strap") S.strap[t]=true; save(); }
+  if(type==="strap"||type==="breath"){ run.i=0; run.mode="set"; } render(); window.scrollTo(0,0); }
+function endRun(save_){ if(save_){ const t=ymd(now()); S.log.push({ts:Date.now(),date:t,type:run.type,pb:run.pb,pa:run.pa,done:run.doneEx,total:run.list.filter(x=>!x.optional).length}); if(run.type==="strap") S.strap[t]=true; if(run.type==="breath"){ S.breath=S.breath||{}; S.breath[t]=true; } save(); }
   try{wakeLock?.release();}catch(e){} run=null; tab=save_?"progress":"home"; render(); window.scrollTo(0,0); }
 function beep(){ try{ const c=new (window.AudioContext||window.webkitAudioContext)(); const o=c.createOscillator(), g=c.createGain(); o.frequency.value=660; g.gain.value=.15; o.connect(g); g.connect(c.destination); o.start(); setTimeout(()=>{o.stop();c.close();},350);}catch(e){} try{navigator.vibrate?.(250);}catch(e){} }
 function embed(url){ const m=url.match(/[?&]v=([\w-]+)/); return m?`https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&playsinline=1`:null; }
@@ -293,10 +310,10 @@ function ringSvg(frac){ const r=100, c=2*Math.PI*r; return `<svg width="220" hei
 function renderRun(){ const R=run, N=R.list.length; const s=SESSIONS[R.type];
   const prog = R.i<0?0:R.mode==="end"?1:(R.i + R.set/Math.max(1,R.list[R.i].sets.length))/N;
   const top = `<div class="top"><button class="x" id="quit" aria-label="Close">✕</button><div class="bar"><i style="width:${prog*100}%"></i></div></div>`;
-  if(R.mode==="pain0"){ app.innerHTML=`<div class="wrap">${top}<div class="step">${s.name} · ${s.mins} min</div><div class="exname">How's the pain right now?</div><p class="muted">0 is none, 10 is the worst. Optional.</p>${painPicker("pp",R.pb)}</div>`;
+  if(R.mode==="pain0"){ app.innerHTML=`<div class="wrap">${top}<div class="step">${s.name} · ${s.mins} min</div><div class="exname">How's the pain right now?</div><p class="muted">0 is none, 10 is the worst. Optional.</p>${["main","core","min"].includes(R.type)?`<p class="muted small" style="margin-top:8px">Tip: train before lunch, or 2+ hours after eating. Rows, lying face down and deadlifts on a full stomach can bring on reflux.</p>`:""}${painPicker("pp",R.pb)}</div>`;
     bindRun(); app.querySelectorAll("#pp [data-p]").forEach(b=>b.onclick=()=>{ R.pb=b.dataset.p==="skip"?null:+b.dataset.p; R.i=0; R.set=0; R.mode="set"; render(); }); return; }
   if(R.mode==="end"){ app.innerHTML=`<div class="wrap">${top}<div class="done-ic">✓</div><div class="exname center">Session done</div><p class="muted center">${R.doneEx} of ${R.list.filter(x=>!x.optional).length} exercises${R.type!=="strap"?"":""}. Nice work.</p>
-    <h2>Pain now? (optional)</h2>${painPicker("pa",R.pa)}<p class="muted small" style="margin-top:14px">Rule: fine if you're back to your usual by tomorrow. Worse tomorrow? Do the flare version next time.</p></div>
+    <h2>Pain now? (optional)</h2>${painPicker("pa",R.pa)}<p class="muted small" style="margin-top:14px">Rule: fine if you're back to your usual by tomorrow. A flare a day after a new session is common, especially after sitting or driving. Clearly worse tomorrow? Do the flare version next time.</p></div>
     <div class="dock"><div class="in"><button class="btn primary" id="saveEnd">Save session</button></div></div>`;
     bindRun(); app.querySelectorAll("#pa [data-p]").forEach(b=>b.onclick=()=>{ R.pa=b.dataset.p==="skip"?null:+b.dataset.p; render(); });
     document.getElementById("saveEnd").onclick=()=>endRun(true); return; }
