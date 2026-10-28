@@ -139,6 +139,8 @@ const V = {
   goblet:"https://www.youtube.com/watch?v=QilYZ20kVfM",
   iso:"https://www.facebook.com/reel/3445297678955456",
   breath:"https://www.youtube.com/watch?v=vMjTJf4-xz0",
+  slr:"https://www.facebook.com/reel/1702534667888237",
+  slrYT:"https://www.youtube.com/watch?v=zo2pqw794B0",
 };
 const PHASES = {w12:"Weeks 1–2", w34:"Weeks 3–4", w58:"Weeks 5–8"};
 // set helpers
@@ -176,6 +178,7 @@ function ex(phase){
     // flare / strap / minimum
     heat:{name:"Heat, if you want it", rest:0, optional:true, load:"Heat pad or warm shower", cues:["Upper back and around the shoulder blade, 10–15 min","Don't feel like it? Skip it, the rest still works","Tap Done when it's on"], sets:[{kind:"reps",target:"10–15 min",label:""}]},
     strapGentle:{name:"Strap sequence, gently", video:V.strap, rest:10, load:"Smaller range", cues:["Retraction: chin down 6, chin up 6","Rotation: 6 each side","No pushing past the end"], sets:[{kind:"reps",target:"6 + 6",label:"Retraction"},{kind:"reps",target:"6 each side",label:"Rotation"}]},
+    slr:{name:"Straight leg raise (knee bonus)", video:V.slr, video2:V.slrYT, rest:30, load:"Left leg · flat pillow or none, neck neutral", cues:["On your back, flat pillow or none. Right knee bent, foot flat","Tighten the front of the left thigh, toes up, leg straight","Lift to about the other knee's height (~45°), hold 2 s","Lower slowly over 2–3 s. Stop if it causes sharp knee pain","Easy? Add a light ankle weight"], sets:reps(2,"10","Left")},
     nodGentle:{name:"Chin nod, gently", video:V.nod, rest:5, load:"Very light effort", cues:["Firm surface, head supported","Nod gently as if saying yes, no lifting","Stop if it stirs the pain"], sets:timed(5,10,"Hold")},
     holdLight:{name:"Suitcase hold, left", video:V.hold, rest:20, load:"Lighter bag than usual", cues:["Stand tall, no leaning","Shoulder down","Set it down slowly"], sets:timed(3,30,"Left")},
     iso:{name:"Doorway isometric rotation", video:V.iso, rest:5, load:"Moderate effort", cues:["Elbow at your side in a doorway","Press out into the frame, then in","Release slowly"], sets:[...timed(5,5,"Outward"),...timed(5,5,"Inward")]},
@@ -193,6 +196,7 @@ const SESSIONS = {
   flare:{name:"Flare day", mins:5, desc:"Gentle, plus heat", list:["heat","strapGentle","nodGentle","holdLight","iso","breath"]},
   min:{name:"Bare minimum", mins:2, desc:"Keeps the habit alive", list:["minRow","minHold"]},
   strap:{name:"Daily strap + chin nod", mins:5, desc:"Must-do, every day", list:["strapRet","strapRot","nod"]},
+  knee:{name:"Knee bonus: straight leg raise", mins:3, desc:"Optional, any day, including flare and rest days", list:["slr"], bonus:true},
   breath:{name:"Belly breathing", mins:2, desc:"Must-do: one set, ideally after lunch", list:["breath"]},
 };
 
@@ -271,7 +275,7 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
   ${restBetween()?`<p class="muted small" style="margin-top:10px">You trained yesterday. While easing in, leave a rest day between sessions: just the two must-dos today.</p>`:""}
   ${easing()?easeCard():""}
   <h2>Or choose</h2>
-  <div class="stack">${Object.entries(SESSIONS).filter(([k])=>k!==sug).map(([k,v])=>`<button class="opt" data-start="${k}"><div><b>${v.name}</b><span class="d">${v.desc}</span></div><span class="t">${v.mins} min</span></button>`).join("")}</div>
+  <div class="stack">${Object.entries(SESSIONS).filter(([k,v])=>k!==sug && !v.bonus).map(([k,v])=>`<button class="opt" data-start="${k}"><div><b>${v.name}</b><span class="d">${v.desc}</span></div><span class="t">${v.mins} min</span></button>`).join("")}</div>
   <h2>Every day: two must-dos</h2>
   <p class="muted small" style="margin:-4px 0 10px">Every day, including session, rest and flare days. They're gentle, so a flare isn't a reason to skip them.</p>
   <div class="stack">
@@ -279,6 +283,9 @@ function home(){ const sug=suggested(), s=sug?SESSIONS[sug]:null, t=ymd(now()), 
   <button class="strapbtn" id="breathTick"><span class="check ${breathDone(t)?"on":""}">${breathDone(t)?"✓":""}</span><div><b>${breathDone(t)?"Belly breathing done today":"One belly-breathing set"}</b><div class="muted small">About 10 breaths, ideally after lunch · tap to mark</div></div></button>
   </div>
   <p class="muted small" style="margin-top:10px">Optional bonuses: extra breathing sets, desk shoulder-blade squeezes, chin-tuck reminders, heat.</p>
+  <h2>Optional bonus</h2>
+  <button class="opt" data-start="knee" id="kneeBonus"><div><b>Straight leg raise (knee bonus)</b><span class="d">${sessionsOn(t).some(e=>e.type==="knee")?"✓ Done today · ":""}2 × 10 left leg · any day. Doesn't count toward sessions.</span></div><span class="t">3 min</span></button>
+  <p class="muted small" style="margin-top:8px">Later: once it's easy, add a light ankle weight. In a few weeks it moves on to split squats or slow step-downs, since lunges have helped your knee before.</p>
   <h2>This week</h2>
   <div class="card">${weekStrip()}<p class="muted small" style="margin-top:12px">Outlined days are Sun, Tue, Wed. Orange dot: strap + chin nod done.</p></div>
   <h2>Good to know</h2>
@@ -336,7 +343,7 @@ function settings(){ return `<h1>Settings</h1>
     <p class="muted">The installed app works offline, except the demo videos. On iPhone it may keep its own separate progress, so before switching, tap Copy backup here in Safari, then Paste backup in the installed app.</p>
   </div>
   <h2>Reset</h2><button class="btn text" id="reset">Erase all progress</button>
-  <p class="muted small center" style="margin-top:8px">Routine v2.2</p>`; }
+  <p class="muted small center" style="margin-top:8px">Routine v2.3</p>`; }
 function bindExtra(){
   const st=document.getElementById("strapTick"); if(st) st.onclick=()=>{ const t=ymd(now()); if(S.strap[t]) delete S.strap[t]; else S.strap[t]=true; save(); render(); };
   const bt=document.getElementById("breathTick"); if(bt) bt.onclick=()=>{ const t=ymd(now()); S.breath=S.breath||{}; if(S.breath[t]) delete S.breath[t]; else S.breath[t]=true; save(); render(); };

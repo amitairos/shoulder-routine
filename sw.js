@@ -1,5 +1,5 @@
 // Shoulder Routine service worker. Bump CACHE when the precached files change.
-const CACHE = "shoulder-routine-v2.2";
+const CACHE = "shoulder-routine-v2.3";
 const PRECACHE = [
   "./",
   "./index.html",
